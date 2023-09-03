@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Line Chart</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
+
+</head>
+<body>
+    <div id="container" class="highchart-container"></div>
+    <script>
+        var data_list_json = '{{ data | tojson}}'
+        var data_list = JSON.parse(data_list_json)
+        var namestring = '{{name}}'
+        var elasticsearchData = [];
+
+        for (var data in data_list) {
+            elasticsearchData.push({ x: data_list[data]._source.timestamp, y: data_list[data]._source.average_gas_fee_usd})
+        }
+        // Create the Highcharts line chart
+        Highcharts.chart('container', {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: `${namestring} Line Chart`
+            },
+            xAxis: {
+                categories: elasticsearchData.map(item => item.x),
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Average gas fee USD($)'
+                }
+            },
+            series: [{
+                name: 'Gas fee',
+                data: elasticsearchData.map(item => item.y)
+            }]
+        });
+    </script>
+
+    <h2>Projects:</h3>
+    {% for address in addresses %}
+        <form method="GET" action="{{address[0]}}">
+            <button class="blue-button" type="submit">{{ address[0] }}</button>
+        </form>
+        <br/>
+    {% endfor %}
+    <a href="/logout">Logout</a>
+
+</body>
+</html>

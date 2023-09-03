@@ -1,0 +1,47 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
+</head>
+<body>
+
+
+<div class="container mt-5">
+    <div class="login-container">
+        <h2 class="login-header">Login</h2>
+        <form method="POST" action="/login">
+            <div class="mb-3">
+                <label for="username" class="">Username:</label>
+                <input type="text" class="" id="username" name="username" placeholder="Enter your username">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="">Password:</label>
+                <input type="password" class="" id="password" name="password" placeholder="Enter your password">
+            </div>
+            <button type="submit" class="blue-button">Login</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for category, message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+</div>
+
+<!-- Include Bootstrap JavaScript (optional, but required for some features) -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
